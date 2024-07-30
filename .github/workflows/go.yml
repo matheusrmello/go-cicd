@@ -13,8 +13,8 @@ jobs:
     timeout-minutes: 30
     strategy:
       matrix:
-        go_version: ['1.18', '1.19', '1.20']
-        os: [ubuntu-22.04]
+        go_version: ['1.18', '1.20']
+        os: [ubuntu-latest]
 
     steps:
     - uses: actions/checkout@v4
