@@ -39,9 +39,6 @@ jobs:
     - name: Test
       run: go test -v main_test.go
 
-    - name: Echo
-      run: echo " ${{ secrets.Teste }} "
-
   build:
     needs: test
     runs-on: ${{ matrix.os }}
