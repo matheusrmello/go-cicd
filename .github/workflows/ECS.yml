@@ -33,7 +33,7 @@ jobs:
       with:
         task-definition: task-definition.json
         container-name: Go
-        image: matheusmello09/go_ci:main
+        image: matheusmello09/go_ci:v${{ github.run_number }}	
         environment-variables: |
           HOST=${{ secrets.DBHOST }}
           USER=${{ secrets.DBUSER }}
