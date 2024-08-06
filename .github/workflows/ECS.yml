@@ -13,4 +13,9 @@ jobs:
         os: [ubuntu-latest]
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Obtendo arquivo da tarefa
+      run:
+        |
+        aws ecs describe-task-definition \
+         --task-definition Tarefa_API-Go \
+         --query taskDefinition > task-definition.json
