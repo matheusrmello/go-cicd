@@ -35,7 +35,7 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: matheusmello09/go_ci:${{ github.ref_name }}
+        tags: matheusmello09/go_ci:$v{{ github.run_number	 }}
 
     
           
