@@ -23,7 +23,7 @@ jobs:
     - name: Donwload task definition
       run:
         |
-        aws ecs describe-task-definition --task-definition Tarefa_API-Go --query taskDefinition > task-definition.json
+        aws ecs describe-task-definition --task-definition Go-task --query taskDefinition > task-definition.json
 
     - name: Copy task definition
       run: cp task-definition.json task-definition.json.old
@@ -34,7 +34,7 @@ jobs:
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: task-definition.json
-        container-name: Go
+        container-name: Go-CI
         image: matheusmello09/go_ci:v${{ github.run_number }}	
         environment-variables: |
           HOST=${{ secrets.DBHOST }}
@@ -48,6 +48,6 @@ jobs:
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: Server_API-Go
-        cluster: go-api
+        service: service_go
+        cluster: go-cluster-dev
         wait-for-service-stability: true
