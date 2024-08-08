@@ -21,3 +21,46 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
+
+    - name: Cloning git repository
+      run: git clone https://github.com/matheusrmello/infra-CICD.git
+
+    - name: HashiCorp - Setup Terraform
+      uses: hashicorp/setup-terraform@v2.0.3
+
+    - run: terraform -chdir=infra-CICD/env/Homolog init
+
+    - run: terraform -chdir=infra-CICD/env/Homolog destroy -auto-approve
+
+    - run: terraform -chdir=infra-CICD/env/Homolog apply -auto-approve
+
+    - run: echo "$(terraform -chdir=infra-CICD/env/Homolog apply output -raw IP_alb)"
+      id: URL
+
+
+    - name: Setup Python
+      uses: actions/setup-python@v5.1.1
+      with:
+        python-version: "3.12"
+        
+    - uses: BSFishy/pip-action@v1
+      with:
+        packages: |
+          locust
+
+    - run: |
+        echo "from locust import HttpUser, TaskSet, task, between" >> locustfile.py
+        echo "" >> locustfile.py
+        echo "class UserTasks(TaskSet):" >> locustfile.py
+        echo "	@task(1)" >> locustfile.py
+        echo "	def index(self):" >> locustfile.py
+        echo '		self.client.get("/matheus")' >> locustfile.py
+        echo "class WebsiteUser(HttpUser):" >> locustfile.py
+        echo "" >> locustfile.py
+        echo "	tasks = [UserTasks]" >> locustfile.py
+        echo "	wait_time = between(1, 5)" >> locustfile.py
+
+    - name: Run load test
+      run: sleep 90s ; locust -f locustfile.py --headless -u 10 -r 5 --run-time 60s -H http://${{ steps.URL.outputs.stdout }}
+            
+    - run: terraform -chdir=infra-CICD/env/Homolog destroy -auto-approve 
