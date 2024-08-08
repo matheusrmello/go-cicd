@@ -63,4 +63,4 @@ jobs:
     - name: Run load test
       run: sleep 90s ; locust -f locustfile.py --headless -u 10 -r 5 --run-time 60s -H http://${{ steps.URL.outputs.stdout }}
             
-              
+    - run: terraform -chdir=infra-CICD/env/Homolog destroy -auto-approve 
