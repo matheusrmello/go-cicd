@@ -27,7 +27,6 @@ jobs:
 
     - name: Copy task definition
       run: cp task-definition.json task-definition.json.old
-      
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
@@ -48,6 +47,18 @@ jobs:
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: service_go
+        cluster: go-cluster-dev
+        wait-for-service-stability: true
+
+    - name: Request
+      continue-on-error: true
+      run: sleep 30s ; wget LB-API-GO-1290617069.us-east-1.elb.amazonaws.com:8000/matheus
+
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: task-definition.json.old
         service: service_go
         cluster: go-cluster-dev
         wait-for-service-stability: true
