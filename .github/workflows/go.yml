@@ -78,7 +78,6 @@ jobs:
     secrets: inherit
 
   Load_Test:
-    needs: build
     if: ${{ github.ref_name=='homolog' }}
     uses: ./.github/workflows/LoadTest.yml
     secrets: inherit
