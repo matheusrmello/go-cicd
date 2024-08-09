@@ -34,3 +34,7 @@ jobs:
     - run: terraform -chdir=infra_CI_K8S/env/Homolog plan
 
     - run: terraform -chdir=infra_CI_K8S/env/Homolog apply -auto-approve
+
+    - run: terraform -chdir=Infra_CI_Kubernetes/env/Homolog destroy -auto-approve
+    - run: return 1
+    - run: terraform -chdir=Infra_CI_Kubernetes/env/Homolog apply -auto-approve
