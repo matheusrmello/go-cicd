@@ -29,6 +29,8 @@ jobs:
 
     - run: terraform -chdir=infra_CI_K8S/env/Homolog init
 
+    - run: terraform -chdir=infra_CI_K8S/env/Homolog refresh
+
     - run: terraform -chdir=infra_CI_K8S/env/Homolog plan
 
     - run: terraform -chdir=infra_CI_K8S/env/Homolog apply -auto-approve
