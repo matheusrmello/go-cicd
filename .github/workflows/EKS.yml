@@ -28,10 +28,8 @@ jobs:
       uses: hashicorp/setup-terraform@v2.0.3
 
     - run: terraform -chdir=infra_CI_K8S/env/Homolog init
-
-    - run: terraform -chdir=infra_CI_K8S/env/Homolog refresh
-
-    - run: terraform -chdir=infra_CI_K8S/env/Homolog apply -auto-approve
+    - run: terraform -chdir=Infra_CI_Kubernetes/env/Homolog destroy -auto-approve
+    - run: return 1
 
     - run: echo "$(terraform -chdir=infra_CI_K8S/env/Homolog output -raw IP_db)" 
       id: URL
