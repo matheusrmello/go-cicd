@@ -64,5 +64,6 @@ jobs:
     
     - run: kubectl apply -f infra_CI_K8S/go.yaml
 
+    - run: kubectl set image deployment/go-api go=matheusmello09/go_ci:v${{ github.run_number	 }}
 
 
