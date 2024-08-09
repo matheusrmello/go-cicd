@@ -40,7 +40,7 @@ jobs:
       uses: Azure/setup-kubectl@v4.0.0
 
     - run: aws sts get-caller-identity
-    - run: aws eks update-kubeconfig --region us-east-1 --name prod-cluster
+    - run: aws eks update-kubeconfig --region us-east-1 --name homolog2
     - run: kubectl get svc
 
    
