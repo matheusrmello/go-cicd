@@ -34,7 +34,7 @@ jobs:
       
     - run: terraform -chdir=infra-CICD/env/Homolog apply -auto-approve
     
-    - run: echo "$(terraform -chdir=Infra_CI/env/Homolog output -raw IP_alb)"
+    - run: echo "$(terraform -chdir=infra-CICD/env/Homolog output -raw IP_alb)"
       id: URL
       
     - name: Setup Python
