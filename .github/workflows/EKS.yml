@@ -33,7 +33,8 @@ jobs:
 
     - run: terraform -chdir=infra_CI_K8S/env/Homolog apply -auto-approve
 
-    - run: terraform -chdir=infra_CI_K8S/env/Homolog destroy -auto-approve
+    - run: echo "$(terraform -chdir=infra_CI_K8S/env/Homolog output -raw IP_db)" 
+      id: URL
 
     - name: Kubectl tool installer
       uses: Azure/setup-kubectl@v4.0.0
@@ -41,6 +42,13 @@ jobs:
     - run: aws sts get-caller-identity
     - run: aws eks update-kubeconfig --region us-east-1 --name prod-cluster
     - run: kubectl get svc
+
+    - run: kubectl create secret generic dbhost --from-literal=HOST=${{ steps.URL.output.stdout }}
+    - run: kubectl create secret generic dbport --from-literal=DBPORT=${{ secrets.DBPORT }}
+    - run: kubectl create secret generic dbuser --from-literal=USER=${{ secrets.DBUSER }}
+    - run: kubectl create secret generic dbpassword --from-literal=PASSWORD=${{ secrets.DBPASSWORD }}
+    - run: kubectl create secret generic dbname --from-literal=DBNAME=${{ secrets.DBNAME }}
+    - run: kubectl create secret generic port --from-literal=PORT=8000
 
 
 
